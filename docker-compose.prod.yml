@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-qira}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qira_prod_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-qira}
+    volumes:
+      - qira_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-qira} -d ${POSTGRES_DB:-qira}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - qira_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      API_PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-qira}:${POSTGRES_PASSWORD:-qira_prod_2026}@postgres:5432/${POSTGRES_DB:-qira}?schema=public
+      REDIS_URL: redis://redis:6379
+      BASE_URL: ${BASE_URL:-https://qira.alkonpos.com}
+      API_URL: http://api:4000
+      API_KEYS: ${API_KEYS:-qira-prod-key-2026:demo-user}
+      COOKIE_SECRET: ${COOKIE_SECRET:-qira-alkonpos-cookie-secret-2026-secure}
+      STORAGE_DRIVER: local
+    volumes:
+      - qira_uploads:/app/apps/api/uploads
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        BASE_URL: ${BASE_URL:-https://qira.alkonpos.com}
+        API_URL: http://api:4000
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      BASE_URL: ${BASE_URL:-https://qira.alkonpos.com}
+      NEXT_PUBLIC_BASE_URL: ${BASE_URL:-https://qira.alkonpos.com}
+      API_URL: http://api:4000
+      WEB_API_KEY: ${WEB_API_KEY:-qira-prod-key-2026}
+
+volumes:
+  qira_pgdata:
+  qira_redisdata:
+  qira_uploads:

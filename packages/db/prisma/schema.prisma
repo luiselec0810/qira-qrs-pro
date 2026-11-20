@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model QrCode {
+  id              String          @id @default(uuid())
+  userId          String
+  name            String
+  slug            String          @unique
+  destinationType String          @default("url") // "url" | "vcard" | "hub"
+  defaultUrl      String?
+  landingData     Json? // vCard or Link Hub data
+  fallbackUrl     String?
+  expiresAt       DateTime?
+  pinCode         String? // scrypt hash, never plain text
+  timezone        String          @default("America/Bogota")
+  utmParams       Json            @default("{}")
+  webhookUrl      String?
+  styleConfig     Json // full qr-code-styling options
+  status          String          @default("active") // "active" | "paused"
+  batchId         String? // set when created through CSV batch generation
+  rules           QrRoutingRule[]
+  scans           QrScan[]
+  cards           CardDesign[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([batchId])
+}
+
+model QrRoutingRule {
+  id            String @id @default(uuid())
+  qrId          String
+  qr            QrCode @relation(fields: [qrId], references: [id], onDelete: Cascade)
+  ruleType      String // "schedule" | "device" | "language"
+  conditionData Json // e.g. { "days": [1,2,3,4,5], "start": "12:00", "end": "15:00" }
+  targetUrl     String
+  priority      Int    @default(1)
+
+  @@index([qrId, priority])
+}
+
+model CardDesign {
+  id              String   @id @default(uuid())
+  userId          String
+  qrId            String?
+  qr              QrCode?  @relation(fields: [qrId], references: [id], onDelete: SetNull)
+  name            String
+  widthCm         Float
+  heightCm        Float
+  bleedMm         Float    @default(3.0)
+  isDoubleSided   Boolean  @default(false)
+  frontCanvasJson Json
+  backCanvasJson  Json?
+  thumbnailUrl    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId, updatedAt])
+}
+
+model QrScan {
+  id          BigInt   @id @default(autoincrement())
+  qrId        String
+  qr          QrCode   @relation(fields: [qrId], references: [id], onDelete: Cascade)
+  scannedAt   DateTime @default(now())
+  visitorHash String
+  country     String?
+  city        String?
+  os          String?
+  deviceType  String?
+  resolvedUrl String
+
+  @@index([qrId, scannedAt])
+  @@index([scannedAt])
+}

@@ -1,0 +1,26 @@
+{
+  "name": "qira-qrs-pro",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "npm@11.9.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "db:generate": "npm run generate -w @qira/db",
+    "db:migrate": "npm run migrate -w @qira/db",
+    "db:push": "npm run push -w @qira/db",
+    "db:seed": "npm run seed -w @qira/db"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.3"
+  }
+}
