@@ -23,25 +23,52 @@ import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from
 import { Field, Input, Label, NativeSelect } from "@/components/ui/input";
 import { Slider, Switch } from "@/components/ui/interactive";
 import { cn } from "@/lib/utils";
+import { CornerDotGlyph, CornerSquareGlyph, DotShapeGlyph } from "./shape-previews";
 
 const DOT_SHAPES: Array<{ value: DotType; label: string }> = [
-  { value: "square", label: "Cuadrado" },
+  { value: "square", label: "Clásico" },
+  { value: "mosaic", label: "Mosaico" },
+  { value: "dots-small", label: "Micro Puntos" },
   { value: "dots", label: "Puntos" },
+  { value: "horizontal-lines", label: "Horizontal" },
+  { value: "vertical-lines", label: "Vertical" },
   { value: "rounded", label: "Redondeado" },
-  { value: "extra-rounded", label: "Extra Redondeado" },
-  { value: "classy", label: "Clásico" },
-  { value: "classy-rounded", label: "Clásico Redondeado" },
+  { value: "extra-rounded", label: "Extra Redond." },
+  { value: "classy", label: "Gota Izq." },
+  { value: "classy-rounded", label: "Gota Der." },
+  { value: "Shuriken", label: "Cóncavo" },
+  { value: "diamond-special", label: "Rombo" },
+  { value: "star", label: "Estrella" },
 ];
 
 const CORNER_SQUARE_SHAPES: Array<{ value: CornerSquareType; label: string }> = [
   { value: "square", label: "Cuadrado" },
-  { value: "dot", label: "Círculo / Punto" },
-  { value: "extra-rounded", label: "Extra Redondeado" },
+  { value: "outpoint", label: "Punta Ext." },
+  { value: "leaf-top-right", label: "Hoja Der." },
+  { value: "leaf-bottom-left", label: "Hoja Izq." },
+  { value: "inpoint", label: "Punta Int." },
+  { value: "classy-rounded", label: "Muesca" },
+  { value: "dot", label: "Círculo" },
+  { value: "extra-rounded", label: "Redondeado" },
+  { value: "pinch", label: "Trapecio" },
+  { value: "rounded", label: "Suave" },
+  { value: "classy", label: "Clásico" },
 ];
 
 const CORNER_DOT_SHAPES: Array<{ value: CornerDotType; label: string }> = [
   { value: "square", label: "Cuadrado" },
-  { value: "dot", label: "Punto" },
+  { value: "outpoint", label: "Punta Ext." },
+  { value: "leaf-top-right", label: "Hoja Der." },
+  { value: "leaf-bottom-left", label: "Hoja Izq." },
+  { value: "classy-rounded", label: "Muesca" },
+  { value: "inpoint", label: "Punta Int." },
+  { value: "vertical-bars", label: "Barras V." },
+  { value: "horizontal-bars", label: "Barras H." },
+  { value: "dot", label: "Círculo" },
+  { value: "rounded", label: "Redondeado" },
+  { value: "pinch", label: "Trapecio" },
+  { value: "diamond", label: "Biselado" },
+  { value: "star", label: "Estrella" },
 ];
 
 const EC_LEVELS: Array<{ value: ErrorCorrectionLevel; label: string }> = [
@@ -277,96 +304,151 @@ export function DesignTab({
             Personaliza los módulos de datos, los marcos exteriores y los puntos interiores de las esquinas de forma independiente.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-5">
-          <div className="space-y-2">
-            <Label>Forma de Módulos (6 estilos)</Label>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <CardContent className="space-y-6">
+          {/* Body Shape Visual Grid */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <Label>Forma del cuerpo ({DOT_SHAPES.length} estilos)</Label>
+              <span className="text-xs text-muted-foreground">
+                Activo: <strong className="text-primary">{DOT_SHAPES.find((s) => s.value === normalized.dotsOptions.type)?.label}</strong>
+              </span>
+            </div>
+            <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8">
               {DOT_SHAPES.map((shape) => {
                 const active = normalized.dotsOptions.type === shape.value;
                 return (
                   <button
                     key={shape.value}
                     type="button"
+                    title={shape.label}
                     onClick={() =>
                       update({
                         dotsOptions: { ...normalized.dotsOptions, type: shape.value },
                       })
                     }
                     className={cn(
-                      "rounded-lg border px-3 py-2 text-xs font-medium transition",
+                      "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
                       active
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "hover:bg-muted",
+                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
+                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
                     )}
                   >
-                    {shape.label}
+                    <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">
+                      <DotShapeGlyph type={shape.value} />
+                    </div>
+                    <span
+                      className={cn(
+                        "w-full truncate text-center text-[11px] font-medium",
+                        active ? "text-primary font-semibold" : "text-muted-foreground group-hover:text-foreground",
+                      )}
+                    >
+                      {shape.label}
+                    </span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>Marco Exterior de Esquina (Ojo Externo)</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {CORNER_SQUARE_SHAPES.map((shape) => {
-                  const active = normalized.cornersSquareOptions.type === shape.value;
-                  return (
-                    <button
-                      key={shape.value}
-                      type="button"
-                      onClick={() =>
-                        update({
-                          cornersSquareOptions: {
-                            ...normalized.cornersSquareOptions,
-                            type: shape.value,
-                          },
-                        })
-                      }
-                      className={cn(
-                        "rounded-lg border px-2.5 py-2 text-xs font-medium transition",
-                        active
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "hover:bg-muted",
-                      )}
-                    >
-                      {shape.label}
-                    </button>
-                  );
-                })}
-              </div>
+          {/* Corner Frame Visual Grid */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <Label>Forma del marco del ojo ({CORNER_SQUARE_SHAPES.length} estilos)</Label>
+              <span className="text-xs text-muted-foreground">
+                Activo:{" "}
+                <strong className="text-primary">
+                  {CORNER_SQUARE_SHAPES.find((s) => s.value === normalized.cornersSquareOptions.type)?.label}
+                </strong>
+              </span>
             </div>
-
-            <div className="space-y-2">
-              <Label>Punto Interior de Esquina (Ojo Interno)</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {CORNER_DOT_SHAPES.map((shape) => {
-                  const active = normalized.cornersDotOptions.type === shape.value;
-                  return (
-                    <button
-                      key={shape.value}
-                      type="button"
-                      onClick={() =>
-                        update({
-                          cornersDotOptions: {
-                            ...normalized.cornersDotOptions,
-                            type: shape.value,
-                          },
-                        })
-                      }
+            <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8">
+              {CORNER_SQUARE_SHAPES.map((shape) => {
+                const active = normalized.cornersSquareOptions.type === shape.value;
+                return (
+                  <button
+                    key={shape.value}
+                    type="button"
+                    title={shape.label}
+                    onClick={() =>
+                      update({
+                        cornersSquareOptions: {
+                          ...normalized.cornersSquareOptions,
+                          type: shape.value,
+                        },
+                      })
+                    }
+                    className={cn(
+                      "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
+                      active
+                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
+                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
+                    )}
+                  >
+                    <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">
+                      <CornerSquareGlyph type={shape.value} />
+                    </div>
+                    <span
                       className={cn(
-                        "rounded-lg border px-2.5 py-2 text-xs font-medium transition",
-                        active
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "hover:bg-muted",
+                        "w-full truncate text-center text-[11px] font-medium",
+                        active ? "text-primary font-semibold" : "text-muted-foreground group-hover:text-foreground",
                       )}
                     >
                       {shape.label}
-                    </button>
-                  );
-                })}
-              </div>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Corner Dot Visual Grid */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <Label>Forma del ojo ({CORNER_DOT_SHAPES.length} estilos)</Label>
+              <span className="text-xs text-muted-foreground">
+                Activo:{" "}
+                <strong className="text-primary">
+                  {CORNER_DOT_SHAPES.find((s) => s.value === normalized.cornersDotOptions.type)?.label}
+                </strong>
+              </span>
+            </div>
+            <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8">
+              {CORNER_DOT_SHAPES.map((shape) => {
+                const active = normalized.cornersDotOptions.type === shape.value;
+                return (
+                  <button
+                    key={shape.value}
+                    type="button"
+                    title={shape.label}
+                    onClick={() =>
+                      update({
+                        cornersDotOptions: {
+                          ...normalized.cornersDotOptions,
+                          type: shape.value,
+                        },
+                      })
+                    }
+                    className={cn(
+                      "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
+                      active
+                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
+                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
+                    )}
+                  >
+                    <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">
+                      <CornerDotGlyph type={shape.value} />
+                    </div>
+                    <span
+                      className={cn(
+                        "w-full truncate text-center text-[11px] font-medium",
+                        active ? "text-primary font-semibold" : "text-muted-foreground group-hover:text-foreground",
+                      )}
+                    >
+                      {shape.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </CardContent>

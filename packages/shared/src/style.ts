@@ -1,10 +1,53 @@
 /**
  * Serializable subset of qr-code-styling options (RF-01.3), persisted in QrCode.styleConfig.
  * `data` is intentionally NOT stored: the payload is always the short URL {BASE_URL}/q/{slug}.
+ *
+ * Extended with the full visual gallery of body modules, corner frames, and corner centers.
  */
-export type DotType = "square" | "dots" | "rounded" | "extra-rounded" | "classy" | "classy-rounded";
-export type CornerSquareType = "square" | "dot" | "extra-rounded";
-export type CornerDotType = "square" | "dot";
+export type DotType =
+  | "square"
+  | "mosaic"
+  | "dots"
+  | "dots-small"
+  | "rounded"
+  | "extra-rounded"
+  | "classy"
+  | "classy-rounded"
+  | "horizontal-lines"
+  | "vertical-lines"
+  | "diamond-special"
+  | "Shuriken"
+  | "star";
+
+export type CornerSquareType =
+  | "square"
+  | "dot"
+  | "extra-rounded"
+  | "rounded"
+  | "classy"
+  | "classy-rounded"
+  | "leaf-top-right"
+  | "leaf-bottom-left"
+  | "inpoint"
+  | "outpoint"
+  | "pinch";
+
+export type CornerDotType =
+  | "square"
+  | "dot"
+  | "rounded"
+  | "classy"
+  | "classy-rounded"
+  | "leaf-top-right"
+  | "leaf-bottom-left"
+  | "inpoint"
+  | "outpoint"
+  | "vertical-bars"
+  | "horizontal-bars"
+  | "diamond"
+  | "star"
+  | "pinch";
+
 export type ErrorCorrectionLevel = "L" | "M" | "Q" | "H";
 
 export interface GradientStop {
