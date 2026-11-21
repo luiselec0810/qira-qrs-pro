@@ -405,8 +405,8 @@ export default function CanvasStage({
       const tr = new Konva.Transformer({
         nodes: [selectedNode],
         rotateEnabled: true,
-        borderStroke: "#ea7a3d",
-        anchorStroke: "#ea7a3d",
+        borderStroke: "#38bdf8",
+        anchorStroke: "#2563eb",
         anchorFill: "#ffffff",
         anchorSize: 8,
         keepRatio: selectedKind === "qr",

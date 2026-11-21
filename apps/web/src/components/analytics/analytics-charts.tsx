@@ -17,7 +17,7 @@ import {
 import type { AnalyticsDto } from "@/lib/types";
 import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const CHART_COLORS = ["#ea7a3d", "#34d399", "#f59e0b", "#fb7185", "#a78bfa", "#38bdf8"];
+const CHART_COLORS = ["#3b82f6", "#06b6d4", "#10b981", "#6366f1", "#38bdf8", "#f59e0b"];
 
 export function ScansTimeSeriesChart({
   series,
@@ -48,11 +48,11 @@ export function ScansTimeSeriesChart({
           </div>
           <div className="flex items-center gap-4 text-xs">
             <span className="flex items-center gap-1.5 text-foreground/90">
-              <span className="size-2.5 rounded-sm bg-[#ea7a3d]" />
+              <span className="size-2.5 rounded-sm bg-[#3b82f6]" />
               Escaneos Totales
             </span>
             <span className="flex items-center gap-1.5 text-foreground/90">
-              <span className="size-2.5 rounded-sm bg-[#34d399]" />
+              <span className="size-2.5 rounded-sm bg-[#06b6d4]" />
               Visitantes Únicos
             </span>
           </div>
@@ -64,47 +64,47 @@ export function ScansTimeSeriesChart({
             <AreaChart data={series} margin={{ top: 12, right: 16, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorScans" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ea7a3d" stopOpacity={0.55} />
-                  <stop offset="95%" stopColor="#ea7a3d" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.55} />
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="colorUnique" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#34d399" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#34d399" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 214, 180, 0.07)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.08)" />
               <XAxis
                 dataKey="bucket"
                 tickFormatter={formatBucket}
-                tick={{ fontSize: 12, fill: "#9e8c7e" }}
-                axisLine={{ stroke: "rgba(255, 214, 180, 0.1)" }}
+                tick={{ fontSize: 12, fill: "#8b9bb4" }}
+                axisLine={{ stroke: "rgba(56, 189, 248, 0.12)" }}
                 tickLine={false}
                 minTickGap={24}
               />
               <YAxis
                 allowDecimals={false}
-                tick={{ fontSize: 12, fill: "#9e8c7e" }}
+                tick={{ fontSize: 12, fill: "#8b9bb4" }}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
                 labelFormatter={(label) => formatBucket(String(label))}
                 contentStyle={{
-                  backgroundColor: "#f7efe8",
-                  color: "#16110e",
-                  borderRadius: "1rem",
-                  border: "none",
-                  boxShadow: "0 16px 32px rgba(0,0,0,0.5)",
+                  backgroundColor: "#0a1222",
+                  color: "#f1f5f9",
+                  borderRadius: "0.875rem",
+                  border: "1px solid rgba(56, 189, 248, 0.25)",
+                  boxShadow: "0 18px 36px rgba(2, 6, 23, 0.75)",
                   fontSize: "12px",
                   fontWeight: 600,
                 }}
-                itemStyle={{ color: "#16110e" }}
+                itemStyle={{ color: "#e2e8f0" }}
               />
               <Area
                 type="monotone"
                 dataKey="scans"
                 name="Escaneos Totales"
-                stroke="#f48c4c"
+                stroke="#3b82f6"
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#colorScans)"
@@ -113,7 +113,7 @@ export function ScansTimeSeriesChart({
                 type="monotone"
                 dataKey="unique"
                 name="Visitantes Únicos"
-                stroke="#34d399"
+                stroke="#06b6d4"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#colorUnique)"
@@ -152,7 +152,7 @@ export function OsDistributionCard({ byOs }: { byOs: AnalyticsDto["byOs"] }) {
                     innerRadius={48}
                     outerRadius={76}
                     paddingAngle={4}
-                    stroke="rgba(22,17,14,0.9)"
+                    stroke="rgba(12, 20, 36, 0.95)"
                   >
                     {byOs.map((entry, idx) => (
                       <Cell key={entry.os} fill={CHART_COLORS[idx % CHART_COLORS.length]} />
@@ -160,10 +160,10 @@ export function OsDistributionCard({ byOs }: { byOs: AnalyticsDto["byOs"] }) {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#1c1511",
-                      color: "#f7efe8",
+                      backgroundColor: "#0a1222",
+                      color: "#f1f5f9",
                       borderRadius: "0.75rem",
-                      border: "1px solid rgba(255,214,180,0.15)",
+                      border: "1px solid rgba(56, 189, 248, 0.25)",
                       fontSize: "12px",
                     }}
                   />
@@ -189,7 +189,7 @@ export function OsDistributionCard({ byOs }: { byOs: AnalyticsDto["byOs"] }) {
                         {item.count} ({pct}%)
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-sky-400/[0.08]">
                       <div
                         className="h-full rounded-full transition-all"
                         style={{ width: `${pct}%`, backgroundColor: color }}
@@ -229,11 +229,11 @@ export function DeviceBreakdownCard({ byDevice }: { byDevice: AnalyticsDto["byDe
                 <div key={item.deviceType} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium capitalize">{item.deviceType}</span>
-                    <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
+                    <span className="rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-300 ring-1 ring-sky-400/25">
                       {item.count} escaneos • {pct}%
                     </span>
                   </div>
-                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-sky-400/[0.08]">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{ width: `${pct}%`, backgroundColor: color }}
@@ -266,10 +266,10 @@ export function TopCitiesCard({ topCities }: { topCities: AnalyticsDto["topCitie
             {topCities.map((c, idx) => (
               <div
                 key={`${c.city}-${c.country ?? ""}-${idx}`}
-                className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#1e1713]/75 px-4 py-3"
+                className="flex items-center justify-between rounded-2xl border border-sky-400/10 bg-[#0f1b30]/75 px-4 py-3"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex size-8 items-center justify-center rounded-xl bg-primary/15 text-xs font-semibold text-primary">
+                  <div className="flex size-8 items-center justify-center rounded-xl bg-blue-500/15 text-xs font-semibold text-sky-300 ring-1 ring-sky-400/25">
                     #{idx + 1}
                   </div>
                   <div>
@@ -298,7 +298,7 @@ export function TopQrsCard({
     <Card className="surface-copper-hero">
       <CardHeader>
         <CardTitle>Códigos QR con Mejor Rendimiento</CardTitle>
-        <CardDescription className="text-foreground/70">
+        <CardDescription className="text-foreground/75">
           Códigos QR más escaneados en el rango de fechas seleccionado.
         </CardDescription>
       </CardHeader>
@@ -312,12 +312,12 @@ export function TopQrsCard({
             {topQrs.map((q) => (
               <div
                 key={q.qrId}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.09] bg-[#150f0c]/80 px-4 py-3 backdrop-blur-md"
+                className="flex items-center justify-between gap-3 rounded-2xl border border-sky-400/15 bg-[#091224]/80 px-4 py-3 backdrop-blur-md"
               >
                 <div className="min-w-0">
                   <Link
                     href={`/qrs/${q.qrId}`}
-                    className="block truncate text-sm font-semibold text-foreground hover:text-primary"
+                    className="block truncate text-sm font-semibold text-foreground hover:text-sky-300"
                   >
                     {q.name}
                   </Link>
@@ -332,7 +332,7 @@ export function TopQrsCard({
                   <button
                     type="button"
                     onClick={() => onSelectQr(q.qrId)}
-                    className="rounded-xl border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-foreground transition hover:bg-primary hover:text-white"
+                    className="rounded-xl border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-200 transition hover:bg-primary hover:text-white cursor-pointer"
                   >
                     Inspeccionar
                   </button>

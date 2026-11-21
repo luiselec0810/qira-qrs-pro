@@ -81,7 +81,7 @@ export function FontPicker({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-white/[0.1] bg-[#120e0b]/90 px-3.5 text-left text-sm text-foreground shadow-inner transition-colors hover:border-primary/50 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/25 cursor-pointer",
+          "flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-sky-400/[0.15] bg-[#08101e]/90 px-3.5 text-left text-sm text-foreground shadow-inner transition-colors hover:border-sky-400/50 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/25 cursor-pointer",
           open && "border-primary ring-[3px] ring-primary/20",
         )}
       >
@@ -105,9 +105,9 @@ export function FontPicker({
       </button>
 
       {open && (
-        <div className="absolute right-0 left-0 z-50 mt-1.5 flex max-h-96 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#16110e] shadow-2xl">
+        <div className="absolute right-0 left-0 z-50 mt-1.5 flex max-h-96 flex-col overflow-hidden rounded-2xl border border-sky-400/20 bg-[#0c1424] shadow-2xl">
           {/* Search input */}
-          <div className="border-b border-white/[0.08] p-2">
+          <div className="border-b border-sky-400/12 p-2">
             <div className="relative">
               <Search className="pointer-events-none absolute top-2.5 left-2.5 size-3.5 text-muted-foreground" />
               <input
@@ -116,7 +116,7 @@ export function FontPicker({
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={`Buscar entre ${STUDIO_FONT_OPTIONS.length} tipografías...`}
                 autoFocus
-                className="h-8 w-full rounded-lg border border-white/10 bg-[#0d0a09] pr-2.5 pl-8 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary/60 focus:outline-none"
+                className="h-8 w-full rounded-lg border border-sky-400/15 bg-[#060b14] pr-2.5 pl-8 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary/60 focus:outline-none"
               />
             </div>
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const fieldBase =
-  "w-full min-w-0 rounded-xl border border-white/[0.1] bg-[#120e0b]/90 px-3.5 text-sm text-foreground shadow-inner outline-none transition-[color,box-shadow,border-color] placeholder:text-muted-foreground focus-visible:border-primary/60 focus-visible:ring-[3px] focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive";
+  "w-full min-w-0 rounded-xl border border-sky-400/[0.15] bg-[#08101e]/90 px-3.5 text-sm text-foreground shadow-inner outline-none transition-[color,box-shadow,border-color] placeholder:text-muted-foreground focus-visible:border-sky-400/70 focus-visible:ring-[3px] focus-visible:ring-sky-500/25 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive";
 
 export function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
@@ -25,7 +25,7 @@ export function Textarea({ className, ...props }: React.ComponentProps<"textarea
 /** Styled native <select>: accessible, zero-JS, good enough for dashboard forms. */
 export function NativeSelect({ className, children, ...props }: React.ComponentProps<"select">) {
   return (
-    <select className={cn(fieldBase, "h-9 py-1 pr-8 [&>option]:bg-[#18120e] [&>option]:text-foreground", className)} {...props}>
+    <select className={cn(fieldBase, "h-9 py-1 pr-8 [&>option]:bg-[#0c1526] [&>option]:text-foreground", className)} {...props}>
       {children}
     </select>
   );

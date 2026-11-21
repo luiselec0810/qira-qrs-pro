@@ -5,7 +5,7 @@ export function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "surface-card rounded-3xl border border-white/[0.08] bg-card text-card-foreground transition-colors",
+        "surface-card rounded-2xl border border-sky-400/[0.12] bg-card text-card-foreground transition-colors",
         className,
       )}
       {...props}
@@ -34,11 +34,11 @@ export function CardFooter({ className, ...props }: React.ComponentProps<"div">)
 }
 
 const badgeTones = {
-  default: "bg-primary/15 text-[#f7995c] ring-1 ring-primary/30",
+  default: "bg-blue-500/15 text-sky-300 ring-1 ring-sky-400/30",
   success: "bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/30",
   warning: "bg-amber-500/15 text-amber-300 ring-1 ring-amber-400/30",
   destructive: "bg-destructive/15 text-red-400 ring-1 ring-red-400/30",
-  muted: "bg-white/[0.06] text-muted-foreground ring-1 ring-white/[0.08]",
+  muted: "bg-sky-400/[0.07] text-muted-foreground ring-1 ring-sky-400/[0.12]",
 } as const;
 
 export function Badge({
@@ -62,7 +62,7 @@ export function Separator({ className, vertical = false }: { className?: string;
   return (
     <div
       role="separator"
-      className={cn("shrink-0 bg-white/[0.08]", vertical ? "h-full w-px" : "h-px w-full", className)}
+      className={cn("shrink-0 bg-sky-400/[0.12]", vertical ? "h-full w-px" : "h-px w-full", className)}
     />
   );
 }
@@ -77,7 +77,7 @@ export function PageHeader({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/[0.06] bg-gradient-to-r from-[#17110d]/90 via-[#1b1410]/85 to-[#14100d]/90 px-6 py-5">
+    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-sky-400/10 bg-gradient-to-r from-[#091220]/95 via-[#0d192c]/90 to-[#08101d]/95 px-6 py-5">
       <div>
         <h1 className="text-xl font-semibold tracking-tight text-foreground">{title}</h1>
         {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}

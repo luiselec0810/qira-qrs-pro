@@ -18,9 +18,9 @@ function pageShell(title: string, body: string): string {
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0d0a09;
-      background-image: radial-gradient(ellipse 65% 45% at 50% 0%, rgba(234, 122, 61, 0.18), transparent 70%);
-      color: #f7efe8;
+      background: #060b14;
+      background-image: radial-gradient(ellipse 65% 45% at 50% 0%, rgba(14, 165, 233, 0.2), transparent 70%);
+      color: #f1f5f9;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -30,11 +30,11 @@ function pageShell(title: string, body: string): string {
     .card {
       width: 100%;
       max-width: 400px;
-      background: #16110e;
-      border: 1px solid rgba(255, 214, 180, 0.12);
-      border-radius: 1.5rem;
+      background: #0c1424;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 1.25rem;
       padding: 2rem;
-      box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 24px 48px -15px rgba(2, 6, 23, 0.85);
       text-align: center;
     }
     .badge {
@@ -44,13 +44,13 @@ function pageShell(title: string, body: string): string {
       width: 3rem;
       height: 3rem;
       border-radius: 9999px;
-      background: rgba(234, 122, 61, 0.15);
-      color: #ea7a3d;
+      background: rgba(37, 99, 235, 0.18);
+      color: #38bdf8;
       margin-bottom: 1rem;
       font-size: 1.25rem;
     }
     h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-    p { font-size: 0.875rem; color: #9e8c7e; line-height: 1.5; margin-bottom: 1.5rem; }
+    p { font-size: 0.875rem; color: #8b9bb4; line-height: 1.5; margin-bottom: 1.5rem; }
     form { display: flex; flex-direction: column; gap: 0.75rem; }
     input[type="password"] {
       width: 100%;
@@ -59,12 +59,12 @@ function pageShell(title: string, body: string): string {
       letter-spacing: 0.25em;
       text-align: center;
       border-radius: 0.75rem;
-      border: 1px solid rgba(255, 214, 180, 0.15);
-      background: #0d0a09;
-      color: #f7efe8;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      background: #060b14;
+      color: #f1f5f9;
       outline: none;
     }
-    input[type="password"]:focus { border-color: #ea7a3d; }
+    input[type="password"]:focus { border-color: #38bdf8; }
     button {
       width: 100%;
       padding: 0.75rem 1rem;
@@ -72,7 +72,7 @@ function pageShell(title: string, body: string): string {
       font-weight: 600;
       border-radius: 0.75rem;
       border: none;
-      background: linear-gradient(180deg, #f48c4c 0%, #db672a 100%);
+      background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
       color: #ffffff;
       cursor: pointer;
     }

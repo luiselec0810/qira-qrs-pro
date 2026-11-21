@@ -329,8 +329,8 @@ export function DesignTab({
                     className={cn(
                       "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
                       active
-                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
-                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
+                        ? "border-sky-400 bg-primary/20 ring-2 ring-sky-400 shadow-[0_8px_22px_-6px_rgba(37,99,235,0.65)]"
+                        : "border-sky-400/15 bg-sky-400/[0.04] hover:border-sky-400/45 hover:bg-sky-400/[0.09]",
                     )}
                   >
                     <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">
@@ -380,8 +380,8 @@ export function DesignTab({
                     className={cn(
                       "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
                       active
-                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
-                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
+                        ? "border-sky-400 bg-primary/20 ring-2 ring-sky-400 shadow-[0_8px_22px_-6px_rgba(37,99,235,0.65)]"
+                        : "border-sky-400/15 bg-sky-400/[0.04] hover:border-sky-400/45 hover:bg-sky-400/[0.09]",
                     )}
                   >
                     <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">
@@ -431,8 +431,8 @@ export function DesignTab({
                     className={cn(
                       "group flex flex-col items-center gap-1.5 rounded-2xl border p-2 transition-all cursor-pointer",
                       active
-                        ? "border-primary bg-primary/15 ring-2 ring-primary shadow-[0_8px_20px_-6px_rgba(234,122,61,0.55)]"
-                        : "border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-white/[0.07]",
+                        ? "border-sky-400 bg-primary/20 ring-2 ring-sky-400 shadow-[0_8px_22px_-6px_rgba(37,99,235,0.65)]"
+                        : "border-sky-400/15 bg-sky-400/[0.04] hover:border-sky-400/45 hover:bg-sky-400/[0.09]",
                     )}
                   >
                     <div className="flex size-14 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm transition-transform group-hover:scale-105">

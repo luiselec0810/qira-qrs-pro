@@ -198,7 +198,7 @@ export default function QrListPage() {
                 Diseña tarjetas doble cara en centímetros y exporta PDFs listos para imprenta con marcas de guillotina de 4 mm.
               </p>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="flex-1 bg-[#18110d]/70" asChild>
+                <Button variant="outline" size="sm" className="flex-1 bg-[#0a1426]/80" asChild>
                   <Link href="/batch">Lote CSV</Link>
                 </Button>
                 <Button size="sm" className="flex-1" asChild>
