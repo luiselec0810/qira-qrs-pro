@@ -296,7 +296,7 @@ export function StudioEditor({ initialCard, initialPresetId }: StudioEditorProps
       locked: false,
       visible: true,
       text: "Mesa {{mesa}}",
-      fontFamily: STUDIO_FONTS[0],
+      fontFamily: STUDIO_FONTS[0] ?? "Inter, system-ui, sans-serif",
       fontSizePt: 16,
       fontStyle: "normal",
       fill: "#111827",
