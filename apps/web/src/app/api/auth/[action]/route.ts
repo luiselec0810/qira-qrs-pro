@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE_NAME } from "@/lib/utils";
 
 const API_URL = process.env.API_URL ?? "http://localhost:4000";
-export const SESSION_COOKIE_NAME = "qira_session";
 
 function cookieOptions() {
   return {
