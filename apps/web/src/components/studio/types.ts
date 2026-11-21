@@ -71,14 +71,71 @@ export interface CanvasDoc {
   layers: CanvasLayer[];
 }
 
-export const STUDIO_FONTS = [
-  "Inter, system-ui, sans-serif",
-  "Arial, Helvetica, sans-serif",
-  "Georgia, serif",
-  "'Times New Roman', Times, serif",
-  "'Courier New', Courier, monospace",
-  "Impact, sans-serif",
+export interface StudioFontOption {
+  label: string;
+  value: string;
+  category: "Sans Serif" | "Serif" | "Display" | "Manuscrita" | "Monoespaciada";
+}
+
+export const STUDIO_FONT_OPTIONS: readonly StudioFontOption[] = [
+  // Sans Serif (14)
+  { label: "Inter", value: "Inter, system-ui, sans-serif", category: "Sans Serif" },
+  { label: "Montserrat", value: "'Montserrat', sans-serif", category: "Sans Serif" },
+  { label: "Poppins", value: "'Poppins', sans-serif", category: "Sans Serif" },
+  { label: "Plus Jakarta Sans", value: "'Plus Jakarta Sans', sans-serif", category: "Sans Serif" },
+  { label: "DM Sans", value: "'DM Sans', sans-serif", category: "Sans Serif" },
+  { label: "Outfit", value: "'Outfit', sans-serif", category: "Sans Serif" },
+  { label: "Space Grotesk", value: "'Space Grotesk', sans-serif", category: "Sans Serif" },
+  { label: "Raleway", value: "'Raleway', sans-serif", category: "Sans Serif" },
+  { label: "Oswald", value: "'Oswald', sans-serif", category: "Sans Serif" },
+  { label: "Nunito", value: "'Nunito', sans-serif", category: "Sans Serif" },
+  { label: "Rubik", value: "'Rubik', sans-serif", category: "Sans Serif" },
+  { label: "Work Sans", value: "'Work Sans', sans-serif", category: "Sans Serif" },
+  { label: "Quicksand", value: "'Quicksand', sans-serif", category: "Sans Serif" },
+  { label: "Josefin Sans", value: "'Josefin Sans', sans-serif", category: "Sans Serif" },
+  { label: "Ubuntu", value: "'Ubuntu', sans-serif", category: "Sans Serif" },
+  { label: "Lato", value: "'Lato', sans-serif", category: "Sans Serif" },
+  { label: "Open Sans", value: "'Open Sans', sans-serif", category: "Sans Serif" },
+  { label: "Roboto", value: "'Roboto', sans-serif", category: "Sans Serif" },
+  { label: "Arial", value: "Arial, Helvetica, sans-serif", category: "Sans Serif" },
+
+  // Serif & Editorial (9)
+  { label: "Playfair Display", value: "'Playfair Display', serif", category: "Serif" },
+  { label: "Cormorant Garamond", value: "'Cormorant Garamond', serif", category: "Serif" },
+  { label: "Cinzel", value: "'Cinzel', serif", category: "Serif" },
+  { label: "Merriweather", value: "'Merriweather', serif", category: "Serif" },
+  { label: "Lora", value: "'Lora', serif", category: "Serif" },
+  { label: "Libre Baskerville", value: "'Libre Baskerville', serif", category: "Serif" },
+  { label: "EB Garamond", value: "'EB Garamond', serif", category: "Serif" },
+  { label: "Georgia", value: "Georgia, serif", category: "Serif" },
+  { label: "Times New Roman", value: "'Times New Roman', Times, serif", category: "Serif" },
+
+  // Display & Titulares (7)
+  { label: "Bebas Neue", value: "'Bebas Neue', sans-serif", category: "Display" },
+  { label: "Anton", value: "'Anton', sans-serif", category: "Display" },
+  { label: "Abril Fatface", value: "'Abril Fatface', serif", category: "Display" },
+  { label: "Righteous", value: "'Righteous', sans-serif", category: "Display" },
+  { label: "Orbitron", value: "'Orbitron', sans-serif", category: "Display" },
+  { label: "Permanent Marker", value: "'Permanent Marker', cursive", category: "Display" },
+  { label: "Impact", value: "Impact, sans-serif", category: "Display" },
+
+  // Manuscrita / Script (5)
+  { label: "Pacifico", value: "'Pacifico', cursive", category: "Manuscrita" },
+  { label: "Dancing Script", value: "'Dancing Script', cursive", category: "Manuscrita" },
+  { label: "Great Vibes", value: "'Great Vibes', cursive", category: "Manuscrita" },
+  { label: "Caveat", value: "'Caveat', cursive", category: "Manuscrita" },
+  { label: "Satisfy", value: "'Satisfy', cursive", category: "Manuscrita" },
+
+  // Monoespaciada (3)
+  { label: "JetBrains Mono", value: "'JetBrains Mono', monospace", category: "Monoespaciada" },
+  { label: "Fira Code", value: "'Fira Code', monospace", category: "Monoespaciada" },
+  { label: "Courier New", value: "'Courier New', Courier, monospace", category: "Monoespaciada" },
 ] as const;
+
+export const STUDIO_FONTS = STUDIO_FONT_OPTIONS.map((f) => f.value);
+
+export const GOOGLE_FONTS_STYLESHEET_URL =
+  "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Anton&family=Bebas+Neue&family=Caveat:wght@500;700&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400;600&family=Great+Vibes&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Josefin+Sans:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Nunito:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Orbitron:wght@500;700&family=Oswald:wght@400;700&family=Outfit:wght@400;700&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&family=Righteous&family=Roboto:ital,wght@0,400;0,700;1,400&family=Rubik:ital,wght@0,400;0,700;1,400&family=Satisfy&family=Space+Grotesk:wght@400;700&family=Ubuntu:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,400;0,700;1,400&display=swap";
 
 export function makeLayerId(prefix = "lyr"): string {
   return `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
@@ -105,7 +162,7 @@ export function createDefaultCanvasDoc(
     locked: false,
     visible: true,
     text: "Escanea el menú",
-    fontFamily: STUDIO_FONTS[0],
+    fontFamily: STUDIO_FONTS[0] ?? "Inter, system-ui, sans-serif",
     fontSizePt: widthCm >= 10 ? 22 : 14,
     fontStyle: "bold",
     fill: "#111827",

@@ -179,6 +179,14 @@ export async function renderCardToBlob(opts: RenderCardOptions): Promise<Blob> {
       }
     }
 
+    // Ensure any webfont used by text layers is loaded before drawing on the 300 DPI canvas
+    if (typeof document !== "undefined" && "fonts" in document) {
+      const fontLoads = opts.doc.layers
+        .filter((l): l is Extract<typeof l, { kind: "text" }> => l.visible && l.kind === "text")
+        .map((l) => document.fonts.load(`${l.fontStyle === "normal" ? "" : `${l.fontStyle} `}24px ${l.fontFamily}`).catch(() => null));
+      await Promise.all(fontLoads);
+    }
+
     // Render visible layers in z-order.
     for (const layer of opts.doc.layers) {
       if (!layer.visible) continue;

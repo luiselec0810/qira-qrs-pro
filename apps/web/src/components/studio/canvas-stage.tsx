@@ -60,9 +60,29 @@ export default function CanvasStage({
   const onUpdateRef = React.useRef(onUpdateLayer);
   onUpdateRef.current = onUpdateLayer;
 
-  // Cache loaded HTMLImageElements by URL + rendered QR bitmap
+  // Cache loaded HTMLImageElements by URL + rendered QR bitmap + webfont readiness tick
   const [imageMap, setImageMap] = React.useState<Record<string, HTMLImageElement>>({});
   const [qrBitmap, setQrBitmap] = React.useState<HTMLImageElement | null>(null);
+  const [fontTick, setFontTick] = React.useState(0);
+
+  // Ensure any Google WebFont used by text layers is loaded and triggers a Konva redraw
+  React.useEffect(() => {
+    if (typeof document === "undefined" || !("fonts" in document)) return;
+    let cancelled = false;
+    const textFonts = new Set<string>();
+    for (const layer of doc.layers) {
+      if (layer.kind === "text" && layer.fontFamily) {
+        textFonts.add(layer.fontFamily);
+      }
+    }
+    if (textFonts.size === 0) return;
+    Promise.all([...textFonts].map((f) => document.fonts.load(`16px ${f}`).catch(() => null))).then(() => {
+      if (!cancelled) setFontTick((t) => t + 1);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [doc.layers]);
 
   // Load any referenced background or image layer URLs
   React.useEffect(() => {
@@ -458,6 +478,7 @@ export default function CanvasStage({
     selectedLayerId,
     imageMap,
     qrBitmap,
+    fontTick,
   ]);
 
   return (

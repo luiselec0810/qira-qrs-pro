@@ -57,6 +57,7 @@ import {
 } from "./types";
 import { loadHtmlImage } from "@/lib/export/render";
 import { ExportDialog } from "./export-dialog";
+import { FontPicker } from "./font-picker";
 
 const CanvasStage = dynamic(() => import("./canvas-stage"), {
   ssr: false,
@@ -1169,18 +1170,12 @@ export function StudioEditor({ initialCard, initialPresetId }: StudioEditorProps
                   </Field>
 
                   <Field label="Tipografía">
-                    <NativeSelect
+                    <FontPicker
                       value={selectedLayer.fontFamily}
-                      onChange={(e) =>
-                        updateLayer(selectedLayer.id, { fontFamily: e.target.value })
+                      onChange={(fontFamily) =>
+                        updateLayer(selectedLayer.id, { fontFamily })
                       }
-                    >
-                      {STUDIO_FONTS.map((f) => (
-                        <option key={f} value={f}>
-                          {f.split(",")[0]?.replace(/'/g, "")}
-                        </option>
-                      ))}
-                    </NativeSelect>
+                    />
                   </Field>
 
                   <div className="grid grid-cols-2 gap-2">
