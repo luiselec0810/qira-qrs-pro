@@ -30,7 +30,6 @@ function buildPageBackgroundStyle(hub: HubData): React.CSSProperties {
       backgroundImage: `url("${theme.bgImageUrl}")`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      backgroundAttachment: "fixed",
       color: fg,
     };
   }
@@ -120,10 +119,10 @@ export function HubView({ hub }: { hub: HubData }) {
       className="relative flex min-h-screen flex-col justify-between px-4 py-12 transition-colors"
       style={pageStyle}
     >
-      {/* Optional dark overlay when a background image is active */}
+      {/* Optional dark overlay scoped strictly inside the HubView container */}
       {hasBgImage ? (
         <div
-          className="pointer-events-none fixed inset-0 z-0"
+          className="pointer-events-none absolute inset-0 z-0"
           style={{ backgroundColor: `rgba(4, 9, 20, ${bgOverlay})` }}
         />
       ) : null}
