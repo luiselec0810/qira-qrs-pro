@@ -12,14 +12,17 @@ import type { CardRepository } from "./ports/cardRepository";
 import type { QrRepository } from "./ports/qrRepository";
 import type { ScanSink } from "./ports/scanSink";
 import type { SlugCache } from "./ports/slugCache";
+import type { UserRepository } from "./ports/userRepository";
 import type { WebhookDispatcher } from "./ports/webhookDispatcher";
 import { registerApiV1Routes } from "./http/apiV1Routes";
+import { registerAuthRoutes } from "./http/authRoutes";
 import { registerPublicRoutes } from "./http/publicRoutes";
 
 export interface AppDeps {
   config: AppConfig;
   qrRepo: QrRepository;
   cardRepo: CardRepository;
+  userRepo?: UserRepository;
   slugCache: SlugCache;
   scanSink: ScanSink;
   webhookDispatcher: WebhookDispatcher;
@@ -82,6 +85,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
   });
 
   await registerPublicRoutes(app, deps);
+  await registerAuthRoutes(app, deps);
   await registerApiV1Routes(app, deps);
 
   return app;

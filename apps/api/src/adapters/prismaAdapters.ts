@@ -9,6 +9,7 @@ import type {
   UpdateQrData,
 } from "../ports/qrRepository";
 import type { AnalyticsQuery, AnalyticsResponse, ScanEventInput, ScanSink } from "../ports/scanSink";
+import type { CreateUserData, UserRecord, UserRepository } from "../ports/userRepository";
 import { UniqueSlugError } from "./inMemoryAdapters";
 import { aggregateScans } from "./analyticsHelper";
 
@@ -358,5 +359,48 @@ export class PrismaScanSink implements ScanSink {
     });
 
     return aggregateScans(scans, qrsById, query);
+  }
+}
+
+export class PrismaUserRepository implements UserRepository {
+  constructor(private readonly db: PrismaClient) {}
+
+  async findById(id: string): Promise<UserRecord | null> {
+    return this.db.user.findUnique({ where: { id } });
+  }
+
+  async findByEmail(email: string): Promise<UserRecord | null> {
+    return this.db.user.findUnique({ where: { email: email.trim().toLowerCase() } });
+  }
+
+  async findByGoogleSub(googleSub: string): Promise<UserRecord | null> {
+    return this.db.user.findUnique({ where: { googleSub } });
+  }
+
+  async create(data: CreateUserData): Promise<UserRecord> {
+    return this.db.user.create({
+      data: {
+        ...(data.id ? { id: data.id } : {}),
+        email: data.email.trim().toLowerCase(),
+        name: data.name.trim(),
+        passwordHash: data.passwordHash ?? null,
+        googleSub: data.googleSub ?? null,
+        avatarUrl: data.avatarUrl ?? null,
+      },
+    });
+  }
+
+  async update(
+    id: string,
+    patch: Partial<Pick<UserRecord, "name" | "passwordHash" | "googleSub" | "avatarUrl">>,
+  ): Promise<UserRecord | null> {
+    try {
+      return await this.db.user.update({
+        where: { id },
+        data: patch,
+      });
+    } catch {
+      return null;
+    }
   }
 }

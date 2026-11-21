@@ -11,6 +11,7 @@ import type { AnalyticsQuery, AnalyticsResponse, ScanEventInput, ScanSink } from
 import type { CachedQrEntry, SlugCache } from "../ports/slugCache";
 import type { WebhookDispatcher, WebhookDispatchResult, WebhookPayload } from "../ports/webhookDispatcher";
 import type { AssetStorage, StoredAsset } from "../ports/assetStorage";
+import type { CreateUserData, UserRecord, UserRepository } from "../ports/userRepository";
 import type { SupportedImageMime } from "../assetValidation";
 import { aggregateScans } from "./analyticsHelper";
 
@@ -283,5 +284,59 @@ export class InMemoryAssetStorage implements AssetStorage {
       mime: params.mime,
       size: params.buffer.length,
     };
+  }
+}
+
+export class InMemoryUserRepository implements UserRepository {
+  public readonly users = new Map<string, UserRecord>();
+
+  async findById(id: string): Promise<UserRecord | null> {
+    return this.users.get(id) ?? null;
+  }
+
+  async findByEmail(email: string): Promise<UserRecord | null> {
+    const lower = email.trim().toLowerCase();
+    for (const u of this.users.values()) {
+      if (u.email.toLowerCase() === lower) return u;
+    }
+    return null;
+  }
+
+  async findByGoogleSub(googleSub: string): Promise<UserRecord | null> {
+    for (const u of this.users.values()) {
+      if (u.googleSub === googleSub) return u;
+    }
+    return null;
+  }
+
+  async create(data: CreateUserData): Promise<UserRecord> {
+    const now = new Date();
+    const record: UserRecord = {
+      id: data.id ?? crypto.randomUUID(),
+      email: data.email.trim().toLowerCase(),
+      name: data.name.trim(),
+      passwordHash: data.passwordHash ?? null,
+      googleSub: data.googleSub ?? null,
+      avatarUrl: data.avatarUrl ?? null,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.users.set(record.id, record);
+    return record;
+  }
+
+  async update(
+    id: string,
+    patch: Partial<Pick<UserRecord, "name" | "passwordHash" | "googleSub" | "avatarUrl">>,
+  ): Promise<UserRecord | null> {
+    const existing = this.users.get(id);
+    if (!existing) return null;
+    const updated: UserRecord = {
+      ...existing,
+      ...patch,
+      updatedAt: new Date(),
+    };
+    this.users.set(id, updated);
+    return updated;
   }
 }

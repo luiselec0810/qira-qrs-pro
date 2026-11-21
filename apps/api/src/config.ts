@@ -22,6 +22,7 @@ export interface AppConfig {
     secretAccessKey: string;
     publicUrl: string;
   };
+  googleClientId: string;
 }
 
 export function parseApiKeys(raw: string | undefined): Map<string, string> {
@@ -59,6 +60,7 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
       publicUrl: (process.env.S3_PUBLIC_URL ?? "").replace(/\/+$/, ""),
     },
+    googleClientId: process.env.GOOGLE_CLIENT_ID ?? process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "",
     ...overrides,
   };
 }

@@ -3,7 +3,12 @@ import { buildApp } from "./app";
 import { loadConfig } from "./config";
 import { LocalDiskAssetStorage, S3AssetStorage } from "./adapters/assetStorageAdapters";
 import { HttpWebhookDispatcher } from "./adapters/httpWebhookDispatcher";
-import { PrismaCardRepository, PrismaQrRepository, PrismaScanSink } from "./adapters/prismaAdapters";
+import {
+  PrismaCardRepository,
+  PrismaQrRepository,
+  PrismaScanSink,
+  PrismaUserRepository,
+} from "./adapters/prismaAdapters";
 import { RedisSlugCache } from "./adapters/redisSlugCache";
 
 async function main() {
@@ -11,6 +16,7 @@ async function main() {
 
   const qrRepo = new PrismaQrRepository(prisma);
   const cardRepo = new PrismaCardRepository(prisma);
+  const userRepo = new PrismaUserRepository(prisma);
   const scanSink = new PrismaScanSink(prisma);
   const slugCache = new RedisSlugCache(config.redisUrl);
   const webhookDispatcher = new HttpWebhookDispatcher(5000);
@@ -23,6 +29,7 @@ async function main() {
     config,
     qrRepo,
     cardRepo,
+    userRepo,
     slugCache,
     scanSink,
     webhookDispatcher,

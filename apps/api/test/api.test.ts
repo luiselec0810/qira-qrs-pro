@@ -571,4 +571,76 @@ describe("@qira/api contract and redirect engine", () => {
       { qrId: qr.id, name: "Analytics Campaign", slug: qr.slug, scans: 3 },
     ]);
   });
+
+  it("supports email+password registration, login, Gmail sign-in, and Bearer token authentication", async () => {
+    const { app } = await createTestHarness();
+
+    // 1. Register with email & password
+    const regRes = await app.inject({
+      method: "POST",
+      url: "/api/public/auth/register",
+      payload: {
+        name: "Laura Gómez",
+        email: "laura@example.com",
+        password: "secretPassword123",
+      },
+    });
+    expect(regRes.statusCode).toBe(201);
+    const regBody = regRes.json();
+    expect(regBody.token).toBeTruthy();
+    expect(regBody.user).toMatchObject({
+      email: "laura@example.com",
+      name: "Laura Gómez",
+      hasPassword: true,
+    });
+
+    // 2. Duplicate registration returns 409
+    const dupRes = await app.inject({
+      method: "POST",
+      url: "/api/public/auth/register",
+      payload: {
+        name: "Laura 2",
+        email: "laura@example.com",
+        password: "secretPassword123",
+      },
+    });
+    expect(dupRes.statusCode).toBe(409);
+
+    // 3. Login with email & password
+    const loginRes = await app.inject({
+      method: "POST",
+      url: "/api/public/auth/login",
+      payload: {
+        email: "laura@example.com",
+        password: "secretPassword123",
+      },
+    });
+    expect(loginRes.statusCode).toBe(200);
+    expect(loginRes.json().token).toBeTruthy();
+
+    // 4. Access /api/v1/qrs using Bearer token without x-api-key
+    const listRes = await app.inject({
+      method: "GET",
+      url: "/api/v1/qrs",
+      headers: { authorization: `Bearer ${regBody.token}` },
+    });
+    expect(listRes.statusCode).toBe(200);
+    expect(listRes.json().items).toEqual([]);
+
+    // 5. Sign in / register via Gmail
+    const gmailRes = await app.inject({
+      method: "POST",
+      url: "/api/public/auth/google",
+      payload: {
+        email: "carlos@gmail.com",
+        name: "Carlos Gmail",
+      },
+    });
+    expect(gmailRes.statusCode).toBe(200);
+    expect(gmailRes.json().user).toMatchObject({
+      email: "carlos@gmail.com",
+      name: "Carlos Gmail",
+      hasGoogle: true,
+    });
+  });
 });

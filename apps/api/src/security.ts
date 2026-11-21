@@ -76,3 +76,50 @@ export function computeVisitorHash(now: Date, secret: string, ip: string, userAg
     .update(`${day}:${secret}:${ip}:${userAgent ?? ""}`)
     .digest("hex");
 }
+
+export interface AuthTokenPayload {
+  sub: string;
+  email: string;
+  name: string;
+  exp: number;
+}
+
+/**
+ * Signs an HMAC-SHA256 stateless session token (`base64url(payload).base64url(sig)`).
+ */
+export function signAuthToken(
+  user: { id: string; email: string; name: string },
+  secret: string,
+  ttlSeconds = 7 * 24 * 3600,
+): string {
+  const payload: AuthTokenPayload = {
+    sub: user.id,
+    email: user.email,
+    name: user.name,
+    exp: Math.floor(Date.now() / 1000) + ttlSeconds,
+  };
+  const body = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+  const sig = crypto.createHmac("sha256", secret).update(body).digest("base64url");
+  return `${body}.${sig}`;
+}
+
+/**
+ * Verifies an HMAC-SHA256 session token and returns its payload or null if invalid/expired.
+ */
+export function verifyAuthToken(token: string | undefined, secret: string): AuthTokenPayload | null {
+  if (!token) return null;
+  const parts = token.split(".");
+  if (parts.length !== 2) return null;
+  const [body, sig] = parts;
+  if (!body || !sig) return null;
+  const expectedSig = crypto.createHmac("sha256", secret).update(body).digest("base64url");
+  if (!safeCompare(sig, expectedSig)) return null;
+  try {
+    const payload = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as AuthTokenPayload;
+    if (!payload.sub || typeof payload.exp !== "number") return null;
+    if (Math.floor(Date.now() / 1000) > payload.exp) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}

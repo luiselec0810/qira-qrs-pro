@@ -13,6 +13,21 @@ function hashPin(pin: string): string {
 async function main() {
   console.log("Seeding QIRA QRs Pro demo data for user:", DEMO_USER_ID);
 
+  // 0. Demo User account (demo@qira.alkonpos.com / demo1234)
+  await prisma.user.upsert({
+    where: { email: "demo@qira.alkonpos.com" },
+    update: {
+      name: "Estudio QIRA Demo",
+      passwordHash: hashPin("demo1234"),
+    },
+    create: {
+      id: DEMO_USER_ID,
+      email: "demo@qira.alkonpos.com",
+      name: "Estudio QIRA Demo",
+      passwordHash: hashPin("demo1234"),
+    },
+  });
+
   // 1. Dynamic URL QR with schedule + device + language rules and UTM params
   const urlQr = await prisma.qrCode.upsert({
     where: { slug: "qiraMenu" },

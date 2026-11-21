@@ -18,7 +18,7 @@ import { InvalidAssetError, validateAssetBuffer } from "../assetValidation";
 import { UniqueSlugError } from "../adapters/inMemoryAdapters";
 import { toCardDto } from "../ports/cardRepository";
 import { toQrDto, type CreateQrData, type QrDto, type QrRecord } from "../ports/qrRepository";
-import { computeVisitorHash, hashPin, resolveApiKey } from "../security";
+import { computeVisitorHash, hashPin, resolveApiKey, verifyAuthToken } from "../security";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -78,6 +78,17 @@ export async function registerApiV1Routes(app: FastifyInstance, deps: AppDeps): 
   app.register(
     async (v1) => {
       v1.addHook("onRequest", async (req: FastifyRequest, reply: FastifyReply) => {
+        const authHeader = req.headers.authorization;
+        const bearer =
+          typeof authHeader === "string" && authHeader.startsWith("Bearer ")
+            ? authHeader.slice(7).trim()
+            : undefined;
+        const tokenPayload = verifyAuthToken(bearer, deps.config.cookieSecret);
+        if (tokenPayload) {
+          req.userId = tokenPayload.sub;
+          return;
+        }
+
         const rawKey = req.headers["x-api-key"];
         const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
         const userId = resolveApiKey(key, deps.config.apiKeys);

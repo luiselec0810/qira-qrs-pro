@@ -10,13 +10,14 @@ import {
   ChevronRight,
   History,
   Layers,
+  LogOut,
   Plus,
   QrCode,
   Search,
-  Settings,
   Sheet,
   Sparkles,
 } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -37,6 +38,40 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [quickSearch, setQuickSearch] = React.useState("");
+  const [currentUser, setCurrentUser] = React.useState<{
+    name: string;
+    email: string;
+    avatarUrl?: string | null;
+  } | null>(null);
+
+  React.useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) setCurrentUser(data.user);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      toast.success("Sesión cerrada");
+      router.push("/login");
+      router.refresh();
+    } catch {
+      router.push("/login");
+    }
+  };
+
+  const initials = React.useMemo(() => {
+    const src = currentUser?.name || "QIRA";
+    return src
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((w) => w[0]?.toUpperCase() ?? "")
+      .join("");
+  }, [currentUser]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,19 +125,24 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <div className="space-y-4">
           <div className="flex items-center gap-3 rounded-2xl border border-sky-400/12 bg-[#0c1628] p-2.5">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-blue-600 text-xs font-bold text-white shadow-sm">
-              QR
+              {initials || "QR"}
             </div>
             <div className="min-w-0 flex-1 leading-tight">
-              <div className="truncate text-xs font-semibold text-foreground">Estudio QIRA</div>
-              <div className="truncate text-[11px] text-muted-foreground">Production Studio</div>
+              <div className="truncate text-xs font-semibold text-foreground">
+                {currentUser?.name ?? "Estudio QIRA"}
+              </div>
+              <div className="truncate text-[11px] text-muted-foreground">
+                {currentUser?.email ?? "Production Studio"}
+              </div>
             </div>
-            <Link
-              href="/analytics"
-              title="Ajustes y Telemetría"
-              className="rounded-lg p-1.5 text-muted-foreground hover:bg-white/[0.06] hover:text-foreground"
+            <button
+              type="button"
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-red-500/15 hover:text-red-400 cursor-pointer"
             >
-              <Settings className="size-3.5" />
-            </Link>
+              <LogOut className="size-3.5" />
+            </button>
           </div>
 
           <div className="border-t border-sky-400/10 pt-3">
