@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { HUB_ICONS } from "./landing";
 import { sanitizeUrl } from "./url";
 
 /** URL field that is sanitized (RNF-03) and normalized to its canonical form. */
@@ -61,6 +62,19 @@ export const vcardSchema = z.object({
   note: z.string().trim().max(1000).optional(),
 });
 
+export const hubButtonStyleSchema = z.object({
+  fillType: z.enum(["theme", "solid", "gradient", "image"]).optional(),
+  color: z.string().max(64).optional(),
+  gradientType: z.enum(["linear", "radial"]).optional(),
+  gradientFrom: z.string().max(64).optional(),
+  gradientTo: z.string().max(64).optional(),
+  gradientAngle: z.number().min(0).max(360).optional(),
+  imageUrl: safeUrl.optional().or(z.literal("").transform(() => undefined)),
+  imageOverlayOpacity: z.number().min(0).max(0.95).optional(),
+  textColor: z.string().max(64).optional(),
+  fontFamily: z.string().max(200).optional(),
+});
+
 export const hubButtonSchema = z.object({
   id: z.string().min(1).max(64),
   label: z.string().trim().min(1).max(80),
@@ -74,14 +88,31 @@ export const hubButtonSchema = z.object({
       return false;
     }
   }, "Unsafe or invalid URL"),
-  icon: z.enum(["link", "whatsapp", "instagram", "facebook", "tiktok", "youtube", "x", "linkedin", "email", "phone", "map", "menu", "shop", "calendar"]),
+  icon: z.enum(HUB_ICONS),
+  style: hubButtonStyleSchema.optional(),
+});
+
+export const hubThemeSchema = z.object({
+  background: z.string().default("#0f172a"),
+  foreground: z.string().default("#f8fafc"),
+  accent: z.string().default("#2563eb"),
+  bgType: z.enum(["solid", "gradient", "image"]).optional(),
+  bgGradientType: z.enum(["linear", "radial"]).optional(),
+  bgGradientFrom: z.string().max(64).optional(),
+  bgGradientTo: z.string().max(64).optional(),
+  bgGradientAngle: z.number().min(0).max(360).optional(),
+  bgImageUrl: safeUrl.optional().or(z.literal("").transform(() => undefined)),
+  bgImageOverlay: z.number().min(0).max(0.95).optional(),
+  titleFont: z.string().max(200).optional(),
+  descriptionFont: z.string().max(200).optional(),
+  buttonFont: z.string().max(200).optional(),
 });
 
 export const hubSchema = z.object({
   logoUrl: safeUrl.optional(),
   title: z.string().trim().min(1).max(120),
   description: z.string().trim().max(500).optional(),
-  theme: z.object({ background: z.string(), foreground: z.string(), accent: z.string() }).optional(),
+  theme: hubThemeSchema.optional(),
   buttons: z.array(hubButtonSchema).max(30),
 });
 

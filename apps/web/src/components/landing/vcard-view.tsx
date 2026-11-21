@@ -8,6 +8,7 @@ import {
   MapPin,
   MessageCircle,
   Phone,
+  Sparkles,
   UserCheck,
 } from "lucide-react";
 
@@ -217,6 +218,20 @@ export function VCardView({ slug, vcard }: { slug: string; vcard: VCardData }) {
           </a>
         </div>
       </div>
+
+      <footer className="mt-8 flex justify-center">
+        <a
+          href="https://alkonpos.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-1.5 text-[11px] font-semibold tracking-[0.16em] text-white/85 uppercase shadow-md backdrop-blur-md transition-all hover:scale-105 hover:border-white/35 hover:bg-black/55 hover:text-white"
+        >
+          <Sparkles className="size-3.5 text-sky-400 transition-transform group-hover:rotate-12" />
+          <span>
+            POWERED BY <strong className="font-extrabold text-white">ALKONPOS</strong>
+          </span>
+        </a>
+      </footer>
     </div>
   );
 }
