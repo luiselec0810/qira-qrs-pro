@@ -961,22 +961,24 @@ export function StudioEditor({ initialCard, initialPresetId }: StudioEditorProps
             )}
           </div>
 
-          <CanvasStage
-            doc={activeDoc}
-            widthCm={widthCm}
-            heightCm={heightCm}
-            bleedMm={bleedMm}
-            showGuides={showGuides}
-            selectedLayerId={selectedLayerId}
-            onSelectLayer={setSelectedLayerId}
-            onUpdateLayer={updateLayer}
-            qr={
-              linkedQr
-                ? { shortUrl: linkedQr.shortUrl, styleConfig: linkedQr.styleConfig }
-                : null
-            }
-            zoom={zoom}
-          />
+          <div data-tour="studio-workspace">
+            <CanvasStage
+              doc={activeDoc}
+              widthCm={widthCm}
+              heightCm={heightCm}
+              bleedMm={bleedMm}
+              showGuides={showGuides}
+              selectedLayerId={selectedLayerId}
+              onSelectLayer={setSelectedLayerId}
+              onUpdateLayer={updateLayer}
+              qr={
+                linkedQr
+                  ? { shortUrl: linkedQr.shortUrl, styleConfig: linkedQr.styleConfig }
+                  : null
+              }
+              zoom={zoom}
+            />
+          </div>
         </section>
 
         {/* Right Inspector: Selected Layer Properties */}

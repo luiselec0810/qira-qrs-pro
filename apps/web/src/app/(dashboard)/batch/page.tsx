@@ -361,7 +361,7 @@ export default function BatchPage() {
         description="Sube un archivo CSV para crear en lote N códigos QR dinámicos en PostgreSQL, sustituir {{variables}} en tu diseño de tarjeta y exportar PNGs a 300 DPI (.zip) o pliegos impuestos con marcas de corte (4 mm) para guillotina."
       />
 
-      <div className="grid gap-6 px-6 lg:grid-cols-3">
+      <div data-tour="batch-workflow" className="grid gap-6 px-6 lg:grid-cols-3">
         {/* Step 1 & 2: Card + Dynamic QR Template Configuration */}
         <Card className="lg:col-span-2">
           <CardHeader>

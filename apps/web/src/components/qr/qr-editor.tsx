@@ -370,24 +370,26 @@ export function QrEditor({
           </Card>
 
           <Tabs defaultValue="destination" className="space-y-4">
-            <TabsList className="w-full justify-start overflow-x-auto">
-              <TabsTrigger value="destination">
-                <Globe className="size-4" />
-                Destino
-              </TabsTrigger>
-              <TabsTrigger value="design">
-                <Palette className="size-4" />
-                Diseño y Contraste
-              </TabsTrigger>
-              <TabsTrigger value="rules">
-                <Route className="size-4" />
-                Reglas Inteligentes ({rules.length})
-              </TabsTrigger>
-              <TabsTrigger value="settings">
-                <Settings2 className="size-4" />
-                Seguridad y Configuración
-              </TabsTrigger>
-            </TabsList>
+            <div data-tour="qr-editor-tabs">
+              <TabsList className="w-full justify-start overflow-x-auto">
+                <TabsTrigger value="destination">
+                  <Globe className="size-4" />
+                  Destino
+                </TabsTrigger>
+                <TabsTrigger value="design">
+                  <Palette className="size-4" />
+                  Diseño y Contraste
+                </TabsTrigger>
+                <TabsTrigger value="rules">
+                  <Route className="size-4" />
+                  Reglas Inteligentes ({rules.length})
+                </TabsTrigger>
+                <TabsTrigger value="settings">
+                  <Settings2 className="size-4" />
+                  Seguridad y Configuración
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="destination">
               <DestinationTab
@@ -438,7 +440,7 @@ export function QrEditor({
         </div>
 
         {/* Right column: Sticky Live QR Preview */}
-        <div className="space-y-4">
+        <div data-tour="qr-preview-panel" className="space-y-4">
           <div className="sticky top-6 space-y-4">
             <Card>
               <CardHeader className="pb-3">

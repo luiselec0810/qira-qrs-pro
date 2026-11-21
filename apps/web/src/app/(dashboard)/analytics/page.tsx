@@ -189,7 +189,7 @@ function AnalyticsDashboardInner() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div data-tour="analytics-overview" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="flex items-center justify-between pt-5">
               <div>

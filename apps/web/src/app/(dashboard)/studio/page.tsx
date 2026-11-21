@@ -66,7 +66,7 @@ export default function StudioListPage() {
 
       <div className="space-y-6 px-6">
         {/* Quick-Start Physical Templates (RF-03.1) */}
-        <section className="space-y-3">
+        <section data-tour="studio-presets" className="space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             Plantillas Físicas Predefinidas (RF-03.1)
           </h2>

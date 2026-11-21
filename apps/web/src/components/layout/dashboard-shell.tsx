@@ -8,6 +8,7 @@ import {
   BarChart3,
   Bell,
   ChevronRight,
+  Compass,
   History,
   Layers,
   LogOut,
@@ -18,6 +19,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
+import { GuidedTour } from "@/components/tour/guided-tour";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -38,6 +40,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [quickSearch, setQuickSearch] = React.useState("");
+  const [tourOpen, setTourOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState<{
     name: string;
     email: string;
@@ -150,6 +153,17 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               Acciones Rápidas
             </div>
             <div className="space-y-0.5">
+              <button
+                type="button"
+                onClick={() => setTourOpen(true)}
+                className="group flex w-full items-center justify-between rounded-lg bg-sky-500/10 px-2.5 py-1.5 text-xs font-medium text-sky-300 ring-1 ring-sky-400/25 transition-colors hover:bg-sky-500/20 cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <Compass className="size-3.5 text-sky-400" />
+                  Tutorial Interactivo
+                </span>
+                <ChevronRight className="size-3.5 opacity-80 transition-transform group-hover:translate-x-0.5" />
+              </button>
               {QUICK_ACTIONS.map(({ href, label, icon: Icon }) => (
                 <Link
                   key={href}
@@ -212,6 +226,14 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
           {/* Right Action Pills */}
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setTourOpen(true)}
+              className="inline-flex h-9 items-center gap-2 rounded-xl border border-sky-400/30 bg-gradient-to-r from-sky-500/15 to-blue-600/15 px-3.5 text-xs font-semibold text-sky-300 shadow-xs transition-all hover:border-sky-400/60 hover:from-sky-500/25 hover:to-blue-600/25 hover:text-white cursor-pointer"
+            >
+              <Compass className="size-4 text-sky-400" />
+              <span>Recorrido Guiado</span>
+            </button>
             <Link
               href="/analytics"
               title="Actividad de Escaneos"
@@ -231,6 +253,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="min-w-0 flex-1">{children}</main>
+        <GuidedTour open={tourOpen} onClose={() => setTourOpen(false)} />
       </div>
     </div>
   );

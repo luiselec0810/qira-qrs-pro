@@ -140,8 +140,8 @@ export default function QrListPage() {
       />
 
       <div className="mx-auto max-w-7xl space-y-6 p-6">
-        {/* Top Hero Row inspired by the warm copper reference dashboard */}
-        <div className="grid gap-5 lg:grid-cols-3">
+        {/* Top Hero Row */}
+        <div data-tour="qrs-hero" className="grid gap-5 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardContent className="flex flex-wrap items-center justify-between gap-6 pt-6">
               <div>
